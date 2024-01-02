@@ -24,9 +24,9 @@ function App() {
     console.log(account)
   }
 
-  useEffect(async () => {
+  useEffect(() => {
     loadBlockchainData()
-    await console.log(account)
+    console.log(account)
   }, [])
 
   return (
