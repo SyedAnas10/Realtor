@@ -10,7 +10,7 @@ contract RealEstate is ERC721URIStorage {
     using Counters for Counters.Counter;
     Counters.Counter private _tokenIds;
 
-    constructor() ERC721("Real Estate Property", "REP")  {}
+    constructor() ERC721("Real Estate", "REAL")  {}
 
     // MINTing NFT's WITH DISTINCTIVE TOKENS AND PROVIDED META DATA THROUGH URI
     function mint(string memory tokenURI) public  returns(uint256) {
@@ -23,7 +23,7 @@ contract RealEstate is ERC721URIStorage {
         return newItemId;
     }
 
-    function totalProperties() public view returns(uint256) {
+    function totalSupply() public view returns(uint256) {
         return _tokenIds.current();
     }
 }
