@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
+import Home from "./Home";
 
-const PropertyList = ({propertyContract, provider}) => {
+const PropertyList = ({propertyContract, provider, escrow, account}) => {
   const [homes, setHomes] = useState([]);
   const [ownedProperties, setOwnedProperties] = useState([]);
   const [home, setHome] = useState({});
@@ -77,6 +78,16 @@ const PropertyList = ({propertyContract, provider}) => {
           ))}
         </div>
       </div>
+
+      {toggle && (
+        <Home
+          home={home}
+          provider={provider}
+          account={account}
+          escrow={escrow}
+          togglePop={togglePop}
+        />
+      )}
     </div>
   );
 };

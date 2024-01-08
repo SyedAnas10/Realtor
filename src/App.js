@@ -80,21 +80,11 @@ function App() {
 
         {provider && propertyContract && (
             <Routes>
-                <Route path="/" element={ <PropertyList propertyContract={propertyContract} provider={provider} /> } />
+                <Route path="/" element={ <PropertyList propertyContract={propertyContract} provider={provider} escrow={escrow} account={account} /> } />
                 <Route path="/list" element={ <PropertyListForm propertyContract={propertyContract} provider={provider}/>}  />
             </Routes>
         )}
       
-
-      {/* {toggle && (
-        <Home
-          home={home}
-          provider={provider}
-          account={account}
-          escrow={escrow}
-          togglePop={togglePop}
-        />
-      )} */}
     </div>
   );
 }

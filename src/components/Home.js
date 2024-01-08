@@ -119,18 +119,18 @@ const Home = ({ home, provider, account, escrow, togglePop }) => {
         <div className="home">
             <div className='home__details'>
                 <div className="home__image">
-                    <img src={home.image} alt="Home" />
+                    <img src={'https://ipfs.io/ipfs/QmQUozrHLAusXDxrvsESJ3PYB3rUeUuBAvVWw6nop2uu7c/3.png'} alt="Home" />
                 </div>
                 <div className="home__overview">
                     <h1>{home.name}</h1>
                     <p>
-                        <strong>{home.attributes[2].value}</strong> bds |
-                        <strong>{home.attributes[3].value}</strong> ba |
-                        <strong>{home.attributes[4].value}</strong> sqft
+                    <strong>{home.bedroom.toNumber()}</strong> bds |
+                  <strong>{home.bathroom.toNumber()}</strong> ba |
+                  <strong>{home.area.toNumber()}</strong> sqft
                     </p>
                     <p>{home.address}</p>
 
-                    <h2>{home.attributes[0].value} ETH</h2>
+                    <h2>{home.price.toNumber()} ETH</h2>
 
                     {owner ? (
                         <div className='home__owned'>
@@ -164,7 +164,7 @@ const Home = ({ home, provider, account, escrow, togglePop }) => {
 
                     <hr />
 
-                    <h2>Overview</h2>
+                    {/* <h2>Overview</h2>
 
                     <p>
                         {home.description}
@@ -178,7 +178,7 @@ const Home = ({ home, provider, account, escrow, togglePop }) => {
                         {home.attributes.map((attribute, index) => (
                             <li key={index}><strong>{attribute.trait_type}</strong> : {attribute.value}</li>
                         ))}
-                    </ul>
+                    </ul> */}
                 </div>
 
 
