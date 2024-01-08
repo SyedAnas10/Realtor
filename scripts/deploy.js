@@ -20,7 +20,6 @@ async function main() {
   await realEstate.deployed()
 
   console.log(`Deployed Real Estate Contract at: ${realEstate.address}`)
-  console.log(`Minting 3 properties...\n`)
 
   // for (let i = 0; i < 3; i++) {
   //   const transaction = await realEstate.connect(seller).mint(`https://ipfs.io/ipfs/QmQVcpsjrA6cr1iJjZAodYwmPekYgbnXGo4DFubJiLc2EB/${i + 1}.json`)
@@ -38,8 +37,7 @@ async function main() {
   await escrow.deployed()
 
   console.log(`Deployed Escrow Contract at: ${escrow.address}`)
-  console.log(`Listing 3 properties...\n`)
-
+  
   // for (let i = 0; i < 3; i++) {
   //   // Approve properties...
   //   let transaction = await realEstate.connect(seller).approve(escrow.address, i + 1)
@@ -65,10 +63,29 @@ async function main() {
   console.log(`Property Contract deployed at : ${_propertyContract.address}`)
 
   // Minting and Listing Properties
-//   let transaction = await _propertyContract.connect(seller).mint('Home', '25 Kenwyn Drive', 400, 2, 1, 1000)
-//   await transaction.wait()
-//  const details = await _propertyContract.connect(seller).getPropertyDetails(1)
-//  console.log(details)
+  // let transaction = await _propertyContract.connect(seller).mint('Home', '25 Kenwyn Drive', 400, 2010, 2, 1, 1000)
+  // await transaction.wait()
+  // console.log(`Property Listed`)
+  // console.log(`Owner of property is ${JSON.stringify(_propertyContract.ownerOf(1))} \n`)
+
+  // Deploy new Escrow Contract
+  const EscrowContract = await ethers.getContractFactory('EscrowContract')
+  const escrowContract = await EscrowContract.deploy()
+  await escrowContract.deployed()
+
+  console.log(`New Escrow Contract deployed at : ${escrowContract.address}`)
+
+  // Transferring Property
+  // transaction = await escrowContract.createEscrow(seller.address, 1, 1000, {value: 500, gasLimit: 3e7})
+  // await transaction.wait()
+  //   console.log(`Escrow Contract created ${ JSON.stringify(escrowContract.getEscrowDetails(1))}\n\n`)
+  // let _newTransaction = await escrowContract.connect(seller).completeEscrow(1, {gasLimit: 3e7})
+  // await _newTransaction.wait()
+
+  // console.log(`Owner of property is ${_propertyContract.ownerOf(1)} \n`)
+
+
+
   
   
   console.log(`Finished.`)

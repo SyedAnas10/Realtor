@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
+import Home from "./Home";
 
-const PropertyList = ({propertyContract, provider}) => {
+const PropertyList = ({propertyContract, provider, escrow, account}) => {
   const [homes, setHomes] = useState([]);
   const [ownedProperties, setOwnedProperties] = useState([]);
   const [home, setHome] = useState({});
+  const [homeIndex, setHomeIndex] = useState(null);
   const [toggle, setToggle] = useState(false);
 
   const loadProperties = async () => {
@@ -20,8 +22,9 @@ const PropertyList = ({propertyContract, provider}) => {
     setOwnedProperties(owned);
   };
 
-  const togglePop = (home) => {
+  const togglePop = (home, index) => {
     setHome(home);
+    setHomeIndex(index+1)
     toggle ? setToggle(false) : setToggle(true);
   };
 
@@ -37,7 +40,7 @@ const PropertyList = ({propertyContract, provider}) => {
         <hr />
         <div className="cards">
           {homes.map((home, index) => (
-            <div className="card" key={index} onClick={() => togglePop(home)}>
+            <div className="card" key={index} onClick={() => togglePop(home, index)}>
               <div className="card__image">
                 <img src={'https://ipfs.io/ipfs/QmQUozrHLAusXDxrvsESJ3PYB3rUeUuBAvVWw6nop2uu7c/3.png'} alt="Home" />
               </div>
@@ -60,7 +63,7 @@ const PropertyList = ({propertyContract, provider}) => {
         <hr />
         <div className="cards">
           {ownedProperties.map((home, index) => (
-            <div className="card" key={index} onClick={() => togglePop(home)}>
+            <div className="card" key={index} onClick={() => togglePop(home, index)}>
               <div className="card__image">
                 <img src={'https://ipfs.io/ipfs/QmQUozrHLAusXDxrvsESJ3PYB3rUeUuBAvVWw6nop2uu7c/3.png'} alt="Home" />
               </div>
@@ -77,6 +80,18 @@ const PropertyList = ({propertyContract, provider}) => {
           ))}
         </div>
       </div>
+
+      {toggle && (
+        <Home
+          home={home}
+          homeIndex={homeIndex}
+          provider={provider}
+          account={account}
+          escrow={escrow}
+          propertyContract = {propertyContract}
+          togglePop={togglePop}
+        />
+      )}
     </div>
   );
 };

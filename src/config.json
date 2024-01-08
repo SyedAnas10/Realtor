@@ -8,6 +8,9 @@
         },
         "PropertyContract": {
             "address": "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0"
+        },
+        "EscrowContract" : {
+            "address": "0xcf7ed3acca5a467e9e704c703e8d87f634fb0fc9"
         }
     }
 }
