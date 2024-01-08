@@ -1,5 +1,6 @@
 import { ethers } from 'ethers';
 import logo from '../assets/logo.svg';
+import { Link } from 'react-router-dom';
 
 const Navigation = ({ account, setAccount }) => {
     const connectHandler = async () => {
@@ -11,9 +12,8 @@ const Navigation = ({ account, setAccount }) => {
     return (
         <nav>
             <ul className='nav__links'>
-                <li><a href="#">Buy</a></li>
-                <li><a href="#">Rent</a></li>
-                <li><a href="#">Sell</a></li>
+                <li><Link to={'/'}>Home</Link></li>
+                <li><Link to={'/list'}>List Property</Link></li>
             </ul>
 
             <div className='nav__brand'>
