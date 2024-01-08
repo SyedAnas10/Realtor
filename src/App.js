@@ -65,7 +65,6 @@ function App() {
 
   useEffect(() => {
     loadBlockchainData();
-    console.log(account);
   }, []);
 
 //   const togglePop = (home) => {
@@ -79,10 +78,12 @@ function App() {
       <Navigation account={account} setAccount={setAccount} />
       <Search />
 
-        <Routes>
-            <Route path="/" element={ <PropertyList propertyContract={propertyContract} provider={provider} /> } />
-            <Route path="/list" element={ <PropertyListForm propertyContract={propertyContract} provider={provider}/>}  />
-        </Routes>
+        {provider && propertyContract && (
+            <Routes>
+                <Route path="/" element={ <PropertyList propertyContract={propertyContract} provider={provider} /> } />
+                <Route path="/list" element={ <PropertyListForm propertyContract={propertyContract} provider={provider}/>}  />
+            </Routes>
+        )}
       
 
       {/* {toggle && (

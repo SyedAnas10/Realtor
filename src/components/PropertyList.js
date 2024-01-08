@@ -6,8 +6,6 @@ const PropertyList = ({propertyContract, provider}) => {
   const [toggle, setToggle] = useState(false);
 
   const loadProperties = async () => {
-    console.log(provider)
-    console.log(propertyContract)
     const signer = provider.getSigner();
     const propertiesCount = await propertyContract.getPropertyCount();
     const properties = [];
@@ -17,7 +15,6 @@ const PropertyList = ({propertyContract, provider}) => {
       properties.push(metadata);
     }
     setHomes(properties);
-    console.log(properties);
   };
 
   const togglePop = (home) => {
