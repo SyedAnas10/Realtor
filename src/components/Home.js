@@ -20,6 +20,16 @@ const Home = ({ home, homeIndex, provider, account, escrow, propertyContract, to
         fetchOwner()
     }, [])
 
+    const initiateEscrow = async () => {
+        try {
+            const signer = await provider.getSigner()
+            const transaction = await escrow.connect(signer).createEscrow(owner, homeIndex, home.price.toNumber(), {value: home.price.toNumber() / 2})
+            await transaction.wait()     
+        } catch (error) {
+            console.error('Error creating escrow:', error);
+        }
+    }
+
     return (
         <div className="home">
             <div className='home__details'>
@@ -44,7 +54,7 @@ const Home = ({ home, homeIndex, provider, account, escrow, propertyContract, to
                     )}
                     {owner && owner !== account && (
                             <div>
-                                <button className='home__buy' disabled={hasBought}>
+                                <button className='home__buy' onClick={initiateEscrow} disabled={hasBought}>
                                     Buy
                                 </button>
                             </div>

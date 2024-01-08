@@ -8,7 +8,7 @@ import Home from "./components/Home";
 
 // ABIs
 import RealEstate from "./abis/RealEstate.json";
-import Escrow from "./abis/Escrow.json";
+import Escrow from "./abis/EscrowContract.json";
 import PropertyContract from "./abis/PropertyContract.json";
 
 // Config
@@ -40,7 +40,7 @@ function App() {
 
     // ESCROW CONTRACT
     const escrow = new ethers.Contract(
-      config[network.chainId].escrow.address,
+      config[network.chainId].EscrowContract.address,
       Escrow,
       provider
     );
@@ -78,7 +78,7 @@ function App() {
       <Navigation account={account} setAccount={setAccount} />
       <Search />
 
-        {provider && propertyContract && (
+        {provider && propertyContract && escrow && (
             <Routes>
                 <Route path="/" element={ <PropertyList propertyContract={propertyContract} provider={provider} escrow={escrow} account={account} /> } />
                 <Route path="/list" element={ <PropertyListForm propertyContract={propertyContract} provider={provider}/>}  />
