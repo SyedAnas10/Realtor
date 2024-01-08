@@ -4,7 +4,6 @@
 // You can also run a script with `npx hardhat run <script>`. If you do that, Hardhat
 // will compile your contracts, add the Hardhat Runtime Environment's members to the
 // global scope, and execute the script.
-const hre = require("hardhat");
 const { ethers } = require('hardhat');
 
 const tokens = (n) => {
@@ -47,16 +46,31 @@ async function main() {
     await transaction.wait()
   }
 
+  
   // Listing properties...
   let transaction = await escrow.connect(seller).list(1, buyer.address, tokens(20), tokens(10))
   await transaction.wait()
-
+  
   transaction = await escrow.connect(seller).list(2, buyer.address, tokens(15), tokens(5))
   await transaction.wait()
-
+  
   transaction = await escrow.connect(seller).list(3, buyer.address, tokens(10), tokens(5))
   await transaction.wait()
+  
+  // Deploy Property Contract
+  const PropertyContract = await ethers.getContractFactory('PropertyContract')
+  const _propertyContract = await PropertyContract.deploy()
+  await _propertyContract.deployed()
 
+  console.log(`Property Contract deployed at : ${_propertyContract.address}`)
+
+  // Minting and Listing Properties
+  transaction = await _propertyContract.connect(seller).mint('Home', '25 Kenwyn Drive', 400, 2, 1, 1000)
+  await transaction.wait()
+ const details = await _propertyContract.connect(seller).getPropertyDetails(1)
+ console.log(details)
+  
+  
   console.log(`Finished.`)
 }
 
