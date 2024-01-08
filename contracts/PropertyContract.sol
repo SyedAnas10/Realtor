@@ -55,4 +55,12 @@ contract PropertyContract is ERC721Enumerable, Ownable {
     function getPropertyDetails(uint itemId) public view returns (PropertyDetails memory) {
         return propertyDetails[itemId];
     }
+
+    function getPropertyCount() public view returns (uint256) {
+        return _tokenIds.current();
+    }
+
+    function isOwner(uint256 tokenId) public view returns (bool) {
+        return ownerOf(tokenId) == msg.sender;
+    }
 }

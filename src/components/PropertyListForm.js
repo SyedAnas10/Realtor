@@ -1,6 +1,8 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const PropertyListForm = ({propertyContract, provider}) => {
+    // PROPERTY DETAILS
   const [houseName, setHouseName] = useState();
   const [address, setAddress] = useState();
   const [area, setArea] = useState();
@@ -9,10 +11,14 @@ const PropertyListForm = ({propertyContract, provider}) => {
   const [baths, setBaths] = useState();
   const [price, setPrice] = useState();
 
+  const [submitting, setSubmitting] = useState(false)
+  const navigate = useNavigate()
+
   const formSubmit =  async () => {
     const signer = await provider.getSigner()
-    const newItemId = await propertyContract.connect(signer).mint(houseName, address, area, rooms, baths, price);
-    console.log(newItemId);
+    const newItemId = await propertyContract.connect(signer).mint(houseName, address, area, year, rooms, baths, price);
+    setSubmitting(false);
+    navigate("/");
   }
 
   return (
@@ -20,6 +26,7 @@ const PropertyListForm = ({propertyContract, provider}) => {
       PropertyListForm
       <form className="form_section" onSubmit={e => {
         e.preventDefault()
+        setSubmitting(true)
         formSubmit()
       }}>
         <label className="form_label">
@@ -44,7 +51,7 @@ const PropertyListForm = ({propertyContract, provider}) => {
           Property Value: <input className="form_input" name="price" type="number" onChange={e => setPrice(e.target.value)} />
         </label>
         <label className="submit">
-          <button type="submit">Submit</button>
+          <button type="submit" disabled={submitting}>Submit</button>
         </label>
       </form>
     </div>
