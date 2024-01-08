@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-function PropertyListForm() {
+const PropertyListForm = ({propertyContract, provider}) => {
   const [houseName, setHouseName] = useState();
   const [address, setAddress] = useState();
   const [area, setArea] = useState();
@@ -9,17 +9,10 @@ function PropertyListForm() {
   const [baths, setBaths] = useState();
   const [price, setPrice] = useState();
 
-  const formSubmit = _ => {
-    const houseDetails = {
-        name: houseName,
-        address: address,
-        area: area,
-        Bedrooms: rooms,
-        Bathrooms: baths,
-        year: year,
-        price: price
-    }
-    alert(houseDetails)
+  const formSubmit =  async () => {
+    const signer = await provider.getSigner()
+    const newItemId = await propertyContract.connect(signer).mint(houseName, address, area, rooms, baths, price);
+    console.log(newItemId);
   }
 
   return (

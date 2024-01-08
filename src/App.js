@@ -9,6 +9,7 @@ import Home from "./components/Home";
 // ABIs
 import RealEstate from "./abis/RealEstate.json";
 import Escrow from "./abis/Escrow.json";
+import PropertyContract from "./abis/PropertyContract.json";
 
 // Config
 import config from "./config.json";
@@ -17,6 +18,7 @@ import PropertyListForm from "./components/PropertyListForm";
 function App() {
   const [provider, setProvider] = useState(null);
   const [escrow, setEscrow] = useState(null);
+  const [propertyContract, setPropertyContract] = useState(null);
 
   const [account, setAccount] = useState(null);
 
@@ -29,6 +31,7 @@ function App() {
     setProvider(provider);
     const network = await provider.getNetwork();
 
+    // REAL ESTATE CONTRACT
     const realEstate = new ethers.Contract(
       config[network.chainId].realEstate.address,
       RealEstate,
@@ -46,12 +49,23 @@ function App() {
 
     setHomes(homes);
 
+    // ESCROW CONTRACT
     const escrow = new ethers.Contract(
       config[network.chainId].escrow.address,
       Escrow,
       provider
     );
     setEscrow(escrow);
+
+    // PROPERTY CONTRACT
+    const propertyContract = new ethers.Contract(
+        config[network.chainId].PropertyContract.address,
+        PropertyContract,
+        provider
+    );
+    console.log(propertyContract.getPropertyDetails(1))
+    console.log(propertyContract.ownerOf(1))
+    setPropertyContract(propertyContract)
 
     window.ethereum.on("accountsChanged", async () => {
       const accounts = await window.ethereum.request({
@@ -72,9 +86,6 @@ function App() {
     toggle ? setToggle(false) : setToggle(true);
   };
 
-  const formSubmit = formData => {
-    console.log(formData)
-  }
 
   return (
     <div>
@@ -106,7 +117,10 @@ function App() {
         </div> */}
       </div>
 
-      <PropertyListForm />
+      <PropertyListForm 
+        propertyContract={propertyContract} 
+        provider={provider}
+    />
 
       {toggle && (
         <Home

@@ -14,6 +14,7 @@ contract PropertyContract is ERC721Enumerable, Ownable {
         string name;
         string propertyAddress;
         uint area;
+        uint year;
         uint bedroom;
         uint bathroom;
         uint price;
@@ -29,6 +30,7 @@ contract PropertyContract is ERC721Enumerable, Ownable {
         string memory _name,
         string memory _address,
         uint _area,
+        uint _year,
         uint _bedroom,
         uint _bathroom,
         uint _price
@@ -41,6 +43,7 @@ contract PropertyContract is ERC721Enumerable, Ownable {
             name: _name,
             propertyAddress: _address,
             area: _area,
+            year: _year,
             bedroom: _bedroom,
             bathroom: _bathroom,
             price: _price
