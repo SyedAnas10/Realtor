@@ -13,27 +13,27 @@ contract PropertyContract is ERC721Enumerable, Ownable {
     struct PropertyDetails {
         string name;
         string propertyAddress;
-        uint area;
-        uint year;
-        uint bedroom;
-        uint bathroom;
-        uint price;
+        uint256 area;
+        uint256 year;
+        uint256 bedroom;
+        uint256 bathroom;
+        uint256 price;
     }
 
     using Counters for Counters.Counter;
     Counters.Counter private _tokenIds;
-    mapping(uint => PropertyDetails) public propertyDetails;
+    mapping(uint256 => PropertyDetails) public propertyDetails;
 
     constructor() ERC721("Property", "PROP") {}
 
     function mint(
         string memory _name,
         string memory _address,
-        uint _area,
-        uint _year,
-        uint _bedroom,
-        uint _bathroom,
-        uint _price
+        uint256 _area,
+        uint256 _year,
+        uint256 _bedroom,
+        uint256 _bathroom,
+        uint256 _price
     ) public returns (uint256) {
         _tokenIds.increment();
         uint256 newItemId = _tokenIds.current();
@@ -52,7 +52,7 @@ contract PropertyContract is ERC721Enumerable, Ownable {
         return newItemId;
     }
 
-    function getPropertyDetails(uint itemId) public view returns (PropertyDetails memory) {
+    function getPropertyDetails(uint256 itemId) public view returns (PropertyDetails memory) {
         return propertyDetails[itemId];
     }
 

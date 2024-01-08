@@ -65,10 +65,10 @@ async function main() {
   console.log(`Property Contract deployed at : ${_propertyContract.address}`)
 
   // Minting and Listing Properties
-  let transaction = await _propertyContract.connect(seller).mint('Home', '25 Kenwyn Drive', 400, 2010, 2, 1, 1000)
-  await transaction.wait()
-  console.log(`Property Listed`)
-  console.log(`Owner of property is ${JSON.stringify(_propertyContract.ownerOf(1))} \n`)
+  // let transaction = await _propertyContract.connect(seller).mint('Home', '25 Kenwyn Drive', 400, 2010, 2, 1, 1000)
+  // await transaction.wait()
+  // console.log(`Property Listed`)
+  // console.log(`Owner of property is ${JSON.stringify(_propertyContract.ownerOf(1))} \n`)
 
   // Deploy new Escrow Contract
   const EscrowContract = await ethers.getContractFactory('EscrowContract')
@@ -78,13 +78,13 @@ async function main() {
   console.log(`New Escrow Contract deployed at : ${escrowContract.address}`)
 
   // Transferring Property
-  transaction = await escrowContract.createEscrow(seller.address, 1, 1000, {value: 500, gasLimit: 3e7})
-  await transaction.wait()
-    console.log(`Escrow Contract created ${ JSON.stringify(escrowContract.getEscrowDetails(1))}\n\n`)
-  let _newTransaction = await escrowContract.connect(seller).completeEscrow(1, {gasLimit: 3e7})
-  await _newTransaction.wait()
+  // transaction = await escrowContract.createEscrow(seller.address, 1, 1000, {value: 500, gasLimit: 3e7})
+  // await transaction.wait()
+  //   console.log(`Escrow Contract created ${ JSON.stringify(escrowContract.getEscrowDetails(1))}\n\n`)
+  // let _newTransaction = await escrowContract.connect(seller).completeEscrow(1, {gasLimit: 3e7})
+  // await _newTransaction.wait()
 
-  console.log(`Owner of property is ${_propertyContract.ownerOf(1)} \n`)
+  // console.log(`Owner of property is ${_propertyContract.ownerOf(1)} \n`)
 
 
 
