@@ -8,7 +8,7 @@ import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
-contract PropertyContract is ERC721Enumerable, Ownable {
+contract PropertyContract is ERC721Enumerable {
 
     struct PropertyDetails {
         string name;
