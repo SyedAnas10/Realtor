@@ -12,79 +12,76 @@ const tokens = (n) => {
 
 async function main() {
   // Setup accounts
-  const [buyer, seller, inspector, lender] = await ethers.getSigners()
-
-  // Deploy Real Estate
-  const RealEstate = await ethers.getContractFactory('RealEstate')
-  const realEstate = await RealEstate.deploy()
-  await realEstate.deployed()
-
-  console.log(`Deployed Real Estate Contract at: ${realEstate.address}`)
-
-  // for (let i = 0; i < 3; i++) {
-  //   const transaction = await realEstate.connect(seller).mint(`https://ipfs.io/ipfs/QmQVcpsjrA6cr1iJjZAodYwmPekYgbnXGo4DFubJiLc2EB/${i + 1}.json`)
-  //   await transaction.wait()
-  // }
-
-  // Deploy Escrow
-  const Escrow = await ethers.getContractFactory('Escrow')
-  const escrow = await Escrow.deploy(
-    realEstate.address,
-    seller.address,
-    inspector.address,
-    lender.address
-  )
-  await escrow.deployed()
-
-  console.log(`Deployed Escrow Contract at: ${escrow.address}`)
+  const [deployer, seller, buyer, approver] = await ethers.getSigners()
   
-  // for (let i = 0; i < 3; i++) {
-  //   // Approve properties...
-  //   let transaction = await realEstate.connect(seller).approve(escrow.address, i + 1)
-  //   await transaction.wait()
-  // }
-
-  
-  // Listing properties...
-  // let transaction = await escrow.connect(seller).list(1, buyer.address, tokens(20), tokens(10))
-  // await transaction.wait()
-  
-  // transaction = await escrow.connect(seller).list(2, buyer.address, tokens(15), tokens(5))
-  // await transaction.wait()
-  
-  // transaction = await escrow.connect(seller).list(3, buyer.address, tokens(10), tokens(5))
-  // await transaction.wait()
   
   // Deploy Property Contract
   const PropertyContract = await ethers.getContractFactory('PropertyContract')
   const _propertyContract = await PropertyContract.deploy()
   await _propertyContract.deployed()
-
   console.log(`Property Contract deployed at : ${_propertyContract.address}`)
-
-  // Minting and Listing Properties
-  // let transaction = await _propertyContract.connect(seller).mint('Home', '25 Kenwyn Drive', 400, 2010, 2, 1, 1000)
-  // await transaction.wait()
-  // console.log(`Property Listed`)
-  // console.log(`Owner of property is ${JSON.stringify(_propertyContract.ownerOf(1))} \n`)
 
   // Deploy new Escrow Contract
   const EscrowContract = await ethers.getContractFactory('EscrowContract')
-  const escrowContract = await EscrowContract.deploy()
-  await escrowContract.deployed()
+  const _escrowContract = await EscrowContract.deploy(_propertyContract.address)
+  await _escrowContract.deployed()
+  console.log(`New Escrow Contract deployed at : ${_escrowContract.address} \n`)
 
-  console.log(`New Escrow Contract deployed at : ${escrowContract.address}`)
+  // Minting Properties
+  let transaction = await _propertyContract.connect(seller).mint('Home', '25 Kenwyn Drive', 400, 2010, 2, 1, tokens(30))
+  await transaction.wait()
+  console.log(`Property Listed Successfully`)
+  let propertyOwner = await _propertyContract.ownerOf(1)
+  console.log(`Owner of property is ${propertyOwner}  \n`)
 
-  // Transferring Property
-  // transaction = await escrowContract.createEscrow(seller.address, 1, 1000, {value: 500, gasLimit: 3e7})
-  // await transaction.wait()
-  //   console.log(`Escrow Contract created ${ JSON.stringify(escrowContract.getEscrowDetails(1))}\n\n`)
-  // let _newTransaction = await escrowContract.connect(seller).completeEscrow(1, {gasLimit: 3e7})
-  // await _newTransaction.wait()
-
-  // console.log(`Owner of property is ${_propertyContract.ownerOf(1)} \n`)
+  // Approve Sales
+  transaction = await _propertyContract.connect(seller).approve(buyer.address, 1)
+  await transaction.wait()
 
 
+  // Initiating Property Transfer
+  transaction = await _escrowContract.connect(buyer).createEscrow(seller.address, approver.address, 1, tokens(30), { value: tokens(15), gasLimit: 3e7 })
+  await transaction.wait()
+  console.log(`Escrow contract created successfully`)
+
+  let escrowDetails = await _escrowContract.getEscrowDetails(1);
+  console.log(`Escrow Details are as follows \n ${ JSON.stringify(escrowDetails)}\n`)
+
+  // Approving Transfer 
+  transaction = await _escrowContract.connect(approver).approveEscrow(1)
+  await transaction.wait()
+  console.log(`Escrow Approved`)
+
+  // Checking Balance
+  let buyerBalance = await buyer.getBalance();
+  let sellerBalance = await seller.getBalance();
+  let deployerBalance = await deployer.getBalance();
+  let approverBalance = await approver.getBalance();
+  console.log(`Balance before transaction for accounts are \n  
+  Seller : ${sellerBalance} \n 
+  Buyer : ${buyerBalance} \n
+  Approver: ${approverBalance} \n
+  Deployer: ${deployerBalance} \n
+  `);
+
+  // Completing Transfer
+  transaction = await _propertyContract.connect(seller).approve(seller.address, 1)
+  await transaction.wait()
+  transaction = await _escrowContract.connect(seller).completeEscrow(1,  {gasLimit: 3e7})
+  await transaction.wait()
+  console.log(`Property Transfer Completed. \n`)
+
+  // Verify Balance
+  buyerBalance = await buyer.getBalance();
+  sellerBalance = await seller.getBalance();
+  deployerBalance = await deployer.getBalance();
+  approverBalance = await approver.getBalance();
+  console.log(`Balance after transaction for accounts are \n  
+  Seller : ${sellerBalance} \n 
+  Buyer : ${buyerBalance} \n
+  Approver: ${approverBalance} \n
+  Deployer: ${deployerBalance} \n
+  `);
 
   
   
