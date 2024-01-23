@@ -74,7 +74,6 @@ contract EscrowContract is Ownable {
 
     function approveEscrow(uint256 _escrowId)
         external
-        onlyApprover(_escrowId)
         escrowOpen(_escrowId)
     {
         Escrow storage escrow = escrows[_escrowId];
