@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 
 import close from '../assets/close.svg';
 
-const Home = ({ home, homeIndex, provider, account, escrow, propertyContract, togglePop }) => {
+const Home = ({ home, homeIndex, provider, account, approver, escrow, propertyContract, togglePop }) => {
     const [hasBought, setHasBought] = useState(false)
     const [hasLended, setHasLended] = useState(false)
     const [hasInspected, setHasInspected] = useState(false)
@@ -23,7 +23,7 @@ const Home = ({ home, homeIndex, provider, account, escrow, propertyContract, to
     const initiateEscrow = async () => {
         try {
             const signer = await provider.getSigner()
-            const transaction = await escrow.connect(signer).createEscrow(owner, homeIndex, home.price.toNumber(), {value: home.price.toNumber() / 2})
+            const transaction = await escrow.connect(signer).createEscrow(owner, approver, homeIndex, home.price.toNumber(), {value: home.price.toNumber() / 2})
             await transaction.wait()     
         } catch (error) {
             console.error('Error creating escrow:', error);

@@ -22,6 +22,7 @@ function App() {
   const [escrow, setEscrow] = useState(null);
   const [propertyContract, setPropertyContract] = useState(null);
 
+  const [approver, setApprover] = useState(null);
   const [account, setAccount] = useState(null);
 
 
@@ -30,13 +31,9 @@ function App() {
     setProvider(provider);
     const network = await provider.getNetwork();
 
-    // REAL ESTATE CONTRACT
-    // const realEstate = new ethers.Contract(
-    //   config[network.chainId].realEstate.address,
-    //   RealEstate,
-    //   provider
-    // );
-
+    // ESCROW APPROVER
+    const _approver = config[network.chainId].Approver.address;
+    setApprover(_approver);
 
     // ESCROW CONTRACT
     const escrow = new ethers.Contract(
@@ -67,20 +64,14 @@ function App() {
     loadBlockchainData();
   }, [account]);
 
-//   const togglePop = (home) => {
-//     setHome(home);
-//     toggle ? setToggle(false) : setToggle(true);
-//   };
-
-
   return (
     <div>
       <Navigation account={account} setAccount={setAccount} />
       <Search />
 
-        {provider && propertyContract && escrow && (
+        {provider && propertyContract && escrow && account && (
             <Routes>
-                <Route path="/" element={ <PropertyList propertyContract={propertyContract} provider={provider} escrow={escrow} account={account} /> } />
+                <Route path="/" element={ <PropertyList propertyContract={propertyContract} provider={provider} escrow={escrow} account={account} approver={approver} /> } />
                 <Route path="/list" element={ <PropertyListForm propertyContract={propertyContract} provider={provider}/>}  />
             </Routes>
         )}

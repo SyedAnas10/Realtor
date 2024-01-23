@@ -1,6 +1,12 @@
 [
   {
-    "inputs": [],
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "contractAddress",
+        "type": "address"
+      }
+    ],
     "stateMutability": "nonpayable",
     "type": "constructor"
   },
@@ -94,6 +100,19 @@
         "type": "uint256"
       }
     ],
+    "name": "approveEscrow",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_escrowId",
+        "type": "uint256"
+      }
+    ],
     "name": "cancelEscrow",
     "outputs": [],
     "stateMutability": "nonpayable",
@@ -109,7 +128,7 @@
     ],
     "name": "completeEscrow",
     "outputs": [],
-    "stateMutability": "nonpayable",
+    "stateMutability": "payable",
     "type": "function"
   },
   {
@@ -117,6 +136,11 @@
       {
         "internalType": "address",
         "name": "_seller",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "_approver",
         "type": "address"
       },
       {
@@ -156,6 +180,11 @@
         "type": "address"
       },
       {
+        "internalType": "address",
+        "name": "approver",
+        "type": "address"
+      },
+      {
         "internalType": "uint256",
         "name": "tokenId",
         "type": "uint256"
@@ -164,6 +193,11 @@
         "internalType": "uint256",
         "name": "price",
         "type": "uint256"
+      },
+      {
+        "internalType": "bool",
+        "name": "isApproved",
+        "type": "bool"
       },
       {
         "internalType": "enum EscrowContract.EscrowStatus",
@@ -210,6 +244,11 @@
             "type": "address"
           },
           {
+            "internalType": "address",
+            "name": "approver",
+            "type": "address"
+          },
+          {
             "internalType": "uint256",
             "name": "tokenId",
             "type": "uint256"
@@ -218,6 +257,11 @@
             "internalType": "uint256",
             "name": "price",
             "type": "uint256"
+          },
+          {
+            "internalType": "bool",
+            "name": "isApproved",
+            "type": "bool"
           },
           {
             "internalType": "enum EscrowContract.EscrowStatus",
@@ -236,6 +280,19 @@
   {
     "inputs": [],
     "name": "owner",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "propertyContractAddress",
     "outputs": [
       {
         "internalType": "address",
